@@ -4,44 +4,52 @@ import (
 	"cesgo/config"
 )
 
-type Users struct {
-	Email       string `json:"email" form:"email" gorm:"primaryKey"`
-	Nama        string `json:"nama" form:"nama"`
-	NoHandphone string `json:"no_handphone" form:"no_handphone"`
-	Alamat      string `json:"alamat" form:"alamat"`
-	Ktp         string `json:"ktp" form:"ktp"`
+type Journal struct {
+	//Journal_id       string `json:"journal_id" form:"journal_id" gorm:"primaryKey"`
+	Journal_date     string `json:"journal_date" form:"journal_date"`
+	Voucher_no       string `json:"voucher_no" form:"voucher_no"`
+	Amount_beginning string `json:"amount_beginning" form:"amount_beginning"`
+	Amount_debit     string `json:"amount_debit" form:"amount_debit"`
+	Amount_credit    string `json:"amount_credit" form:"amount_credit"`
+	Amount_ending    string `json:"amount_ending" form:"amount_ending"`
+	Description      string `json:"description" form:"description"`
+	Created_by       string `json:"created_by" form:"created_by"`
+	Created_at       string `json:"created_at" form:"created_at"`
 }
 
-func (user *Users) CreateUser() error {
-	if err := config.DB.Create(user).Error; err != nil {
+func (journal *Journal) Createjournal() error {
+	if err := config.DB.Create(journal).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (user *Users) UpdateUser(email string) error {
-	if err := config.DB.Model(&Users{}).Where("email = ?", email).Updates(user).Error; err != nil {
+func (journal *Journal) Updatejournal(journal_id string) error {
+	if err := config.DB.Model(&Journal{}).Where("journal_id = ?", journal_id).Updates(journal).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (user *Users) DeleteUser() error {
-	if err := config.DB.Delete(user).Error; err != nil {
+func (journal *Journal) Deletejournal() error {
+	if err := config.DB.Delete(journal).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func GetOneByEmail(email string) (Users, error) {
-	var user Users
-	result := config.DB.Where("email = ?", email).First(&user)
-	return user, result.Error
+func Getjournal() ([]Journal, error) {
+	var Journal []Journal
+
+	result := config.DB.Find(&Journal)
+
+	return Journal, result.Error
 }
 
-func GetAll(keywords string) ([]Users, error) {
-	var users []Users
-	result := config.DB.Where("email LIKE ? OR nama LIKE ?", "%"+keywords+"%", "%"+keywords+"%").Find(&users)
+func GetAll(year string) ([]Journal, error) {
+	var Journal []Journal
 
-	return users, result.Error
+	result := config.DB.Where(" year( journal_date ) = ?", year).Find(&Journal)
+
+	return Journal, result.Error
 }

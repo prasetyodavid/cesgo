@@ -67,8 +67,3 @@ func SearchUser(c echo.Context) (err error) {
 	}
 	return c.JSON(http.StatusOK, response)
 }
-
-func Get(c echo.Context) (err error) {
-	fmt.Println("abcdefg mldtss sss")
-	return
-}
