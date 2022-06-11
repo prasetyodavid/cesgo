@@ -51,13 +51,13 @@ func (s *CesGo) Start(port string) {
 	r.GET("/journal", cashier.GetJournal)
 	r.POST("/journalcreate", cashier.CreateJournal)
 	r.POST("/cashier/journalcreate", cashier.CreateJournal)
+	r.POST("/users/create", users.CreateUser)
 
 	//Public Endpoints
 	s.e.GET("/cashier/voucher", cashier.GetVoucher)
 	s.e.POST("/cashier/journalsearch", cashier.SearchJournal)
 	s.e.POST("/cashier/journalreport", cashier.GetJournalReport)
 	s.e.GET("/users/search", users.SearchUser)
-	s.e.POST("/users/create", users.CreateUser)
 
 	//serve static
 	s.e.Static("/report", reportPath)
